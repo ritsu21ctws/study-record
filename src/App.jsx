@@ -1,35 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [title, setTitle] = useState("");
+  const [time, setTime] = useState(0);
+  const [records, setRecords] = useState([]);
+  const [error, setError] = useState("");
+  const [totalTime, setTotalTime] = useState(0);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  const onChangeTitle = event => setTitle(event.target.value);
+  const onChangeTime = event => setTime(event.target.value);
+  const onClickAdd = () => {
+    if (title === "" || time === "" || time === 0) {
+      setError("入力されていない項目があります");
+      return;
+    }
+
+    const newRecords = [...records, {title, time}];
+    setRecords(newRecords);
+
+    // 合計時間の計算
+    const newTotalTime = newRecords.reduce((accumulator, currentValue) => accumulator + parseInt(currentValue.time), 0);
+    setTotalTime(newTotalTime);
+
+    // 初期化
+    setTitle("");
+    setTime(0);
+    setError("");
+  }
+
+  return <>
+    <h1>学習記録一覧</h1>
+    <p>
+      学習内容
+      <input type="text" value={title} onChange={onChangeTitle} />
+    </p>
+    <p>
+      学習時間
+      <input type="number" min="0" value={time} onChange={onChangeTime} />
+      時間
+    </p>
+    <p>入力されている学習内容：{title}</p>
+    <p>入力されている時間：{time}時間</p>
+    <ul>
+      {records.map((record) => (
+        <li key={record.title}>
+          {`${record.title} ${record.time}時間`}
+        </li>
+      ) )}
+    </ul>
+    <button onClick={onClickAdd}>登録</button>
+    {error !== "" && <p class="error">{error}</p>}
+    <p>合計時間：{totalTime} / 1000 (h)</p>
+  </>;
 }
 
-export default App
+export default App;

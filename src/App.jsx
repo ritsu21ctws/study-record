@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import { getAllRecords } from "../utils/supabaseFunctions";
 
 function App() {
   const [title, setTitle] = useState("");
@@ -7,6 +8,18 @@ function App() {
   const [records, setRecords] = useState([]);
   const [error, setError] = useState("");
   const [totalTime, setTotalTime] = useState(0);
+
+  useEffect(() => {
+    const getRecords = async () => {
+      const records = await getAllRecords();
+      setRecords(records);
+
+      // 合計時間の計算
+      const totalTime = records.reduce((accumulator, currentValue) => accumulator + parseInt(currentValue.time), 0);
+      setTotalTime(totalTime);
+    }
+    getRecords();
+  }, []);
 
   const onChangeTitle = event => setTitle(event.target.value);
   const onChangeTime = event => setTime(event.target.value);
@@ -44,7 +57,7 @@ function App() {
     <p>入力されている時間：{time}時間</p>
     <ul>
       {records.map((record) => (
-        <li key={record.title}>
+        <li key={record.id}>
           {`${record.title} ${record.time}時間`}
         </li>
       ) )}

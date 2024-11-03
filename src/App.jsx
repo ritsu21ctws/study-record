@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { addRecord, getAllRecords } from "../utils/supabaseFunctions";
+import { addRecord, deleteRecord, getAllRecords } from "../utils/supabaseFunctions";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +28,7 @@ function App() {
 
   const onChangeTitle = event => setTitle(event.target.value);
   const onChangeTime = event => setTime(event.target.value);
+
   const onClickAdd = async () => {
     if (title === "" || time === "" || time === 0) {
       setError("入力されていない項目があります");
@@ -40,7 +41,7 @@ function App() {
     });
 
     if (result.status !== 201) {
-      setError("登録処理に失敗しました。");
+      setError("登録処理に失敗しました");
       return;
     }
 
@@ -50,6 +51,22 @@ function App() {
     setTitle("");
     setTime(0);
     setError("");
+  }
+
+  const onClickDelete = async (id) => {
+    if (confirm("削除します。よろしいですか？")) {
+      const result = await deleteRecord(id);
+
+      if (result.status !== 204) {
+        setError("削除処理に失敗しました");
+        return;
+      }
+
+      getRecords();
+
+      // 初期化
+      setError("");
+    }
   }
 
   if (isLoading) {
@@ -73,7 +90,7 @@ function App() {
       <ul>
         {records.map((record) => (
           <li key={record.id}>
-            {`${record.title} ${record.time}時間`}
+            {`${record.title} ${record.time}時間`}<button onClick={() => onClickDelete(record.id)}>削除</button>
           </li>
         ) )}
       </ul>

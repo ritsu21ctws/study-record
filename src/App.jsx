@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { getAllRecords } from "../utils/supabaseFunctions";
+import { addRecord, getAllRecords } from "../utils/supabaseFunctions";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,34 +10,41 @@ function App() {
   const [error, setError] = useState("");
   const [totalTime, setTotalTime] = useState(0);
 
+  const getRecords = async () => {
+    const records = await getAllRecords();
+    setRecords(records);
+
+    // 合計時間の計算
+    const totalTime = records.reduce((accumulator, currentValue) => accumulator + parseInt(currentValue.time), 0);
+    setTotalTime(totalTime);
+
+    setIsLoading(false);
+  }
+
+  // 画面初期表示
   useEffect(() => {
-    const getRecords = async () => {
-      const records = await getAllRecords();
-      setRecords(records);
-
-      // 合計時間の計算
-      const totalTime = records.reduce((accumulator, currentValue) => accumulator + parseInt(currentValue.time), 0);
-      setTotalTime(totalTime);
-
-      setIsLoading(false);
-    }
     getRecords();
   }, []);
 
   const onChangeTitle = event => setTitle(event.target.value);
   const onChangeTime = event => setTime(event.target.value);
-  const onClickAdd = () => {
+  const onClickAdd = async () => {
     if (title === "" || time === "" || time === 0) {
       setError("入力されていない項目があります");
       return;
     }
 
-    const newRecords = [...records, {title, time}];
-    setRecords(newRecords);
+    const result = await addRecord({
+      title,
+      time
+    });
 
-    // 合計時間の計算
-    const newTotalTime = newRecords.reduce((accumulator, currentValue) => accumulator + parseInt(currentValue.time), 0);
-    setTotalTime(newTotalTime);
+    if (result.status !== 201) {
+      setError("登録処理に失敗しました。");
+      return;
+    }
+
+    getRecords();
 
     // 初期化
     setTitle("");

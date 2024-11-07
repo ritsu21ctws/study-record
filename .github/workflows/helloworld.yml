@@ -1,4 +1,5 @@
 name: Hello World
+run-name: Hello Worldの実行
 
 on:
   push:

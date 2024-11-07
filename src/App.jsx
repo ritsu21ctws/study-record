@@ -90,11 +90,11 @@ function App() {
       <ul>
         {records.map((record) => (
           <li key={record.id}>
-            {`${record.title} ${record.time}時間`}<button onClick={() => onClickDelete(record.id)}>削除</button>
+            {`${record.title} ${record.time}時間`}<button onClick={() => onClickDelete(record.id)}>削除ボタン</button>
           </li>
         ) )}
       </ul>
-      <button onClick={onClickAdd}>登録</button>
+      <button onClick={onClickAdd}>登録ボタン</button>
       {error !== "" && <p class="error">{error}</p>}
       <p>合計時間：{totalTime} / 1000 (h)</p>
     </>;

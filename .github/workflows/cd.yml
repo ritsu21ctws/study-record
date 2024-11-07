@@ -1,0 +1,15 @@
+name: CD
+run-name: CDの実行
+
+on:
+  push:
+    - 'main'
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy
+        run: make deploy

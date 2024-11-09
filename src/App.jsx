@@ -75,7 +75,7 @@ function App() {
     </>;
   } else {
     return <>
-      <h1>学習記録一覧</h1>
+      <h1 data-testid="title">学習記録一覧</h1>
       <p>
         学習内容
         <input type="text" value={title} onChange={onChangeTitle} />

@@ -78,11 +78,11 @@ function App() {
       <h1 data-testid="title">学習記録一覧</h1>
       <p>
         学習内容
-        <input type="text" value={title} onChange={onChangeTitle} />
+        <input type="text" value={title} onChange={onChangeTitle} data-testid="inputText" />
       </p>
       <p>
         学習時間
-        <input type="number" min="0" value={time} onChange={onChangeTime} />
+        <input type="number" min="0" value={time} onChange={onChangeTime} data-testid="inputTime"/>
         時間
       </p>
       <p>入力されている学習内容：{title}</p>
@@ -90,11 +90,11 @@ function App() {
       <ul>
         {records.map((record) => (
           <li key={record.id}>
-            {`${record.title} ${record.time}時間`}<button onClick={() => onClickDelete(record.id)}>削除ボタン</button>
+            {`${record.title} ${record.time}時間`}<button onClick={() => onClickDelete(record.id)}>削除</button>
           </li>
         ) )}
       </ul>
-      <button onClick={onClickAdd}>登録ボタン</button>
+      <button onClick={onClickAdd}>登録</button>
       {error !== "" && <p class="error">{error}</p>}
       <p>合計時間：{totalTime} / 1000 (h)</p>
     </>;

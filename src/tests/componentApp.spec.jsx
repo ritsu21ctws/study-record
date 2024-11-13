@@ -5,6 +5,16 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 describe("App Component Test", () => {
+  beforeEach(() => {
+    // confirmダイアログをモックし、常に「OK」をクリックした状態にする
+    jest.spyOn(window, 'confirm').mockImplementation(() => true);
+  });
+
+  afterEach(() => {
+    // 他のテストに影響を与えないように、confirmモックを元に戻す
+    window.confirm.mockRestore();
+  });
+
   it("タイトルが「学習記録一覧」であること", async () => {
     render(<App />);
     const title = await screen.findByTestId("title");
@@ -22,6 +32,18 @@ describe("App Component Test", () => {
     await waitFor(() => {
       const afterLists = screen.getAllByRole('listitem');
       expect(afterLists).toHaveLength(beforeLists.length + 1);
+    });
+  });
+
+  it("削除ボタンを押すと学習記録が削除されること", async () => {
+    render(<App />);
+    const beforeLists = await screen.findAllByRole('listitem');
+
+    await userEvent.click(screen.getAllByRole('button', {name: '削除'})[beforeLists.length - 1]);
+
+    await waitFor(() => {
+      const afterLists = screen.getAllByRole('listitem');
+      expect(afterLists).toHaveLength(beforeLists.length - 1);
     });
   });
 });

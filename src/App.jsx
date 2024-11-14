@@ -95,7 +95,7 @@ function App() {
         ) )}
       </ul>
       <button onClick={onClickAdd}>登録</button>
-      {error !== "" && <p class="error">{error}</p>}
+      {error !== "" && <p className="error">{error}</p>}
       <p>合計時間：{totalTime} / 1000 (h)</p>
     </>;
   }

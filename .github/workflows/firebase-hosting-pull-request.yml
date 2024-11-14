@@ -18,6 +18,9 @@ jobs:
           VITE_SUPABASE_URL: ${{secrets.SUPABASE_URL}}
           VITE_SUPABASE_ANON_KEY: ${{secrets.SUPABASE_ANON_KEY}}
       - run: npm run test
+        env:
+          VITE_SUPABASE_URL: ${{secrets.SUPABASE_URL}}
+          VITE_SUPABASE_ANON_KEY: ${{secrets.SUPABASE_ANON_KEY}}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}

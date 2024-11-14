@@ -46,4 +46,18 @@ describe("App Component Test", () => {
       expect(afterLists).toHaveLength(beforeLists.length - 1);
     });
   });
+
+  it("入力をしないで登録を押すとエラーが表示される", async () => {
+    render(<App />);
+    const beforeLists = await screen.findAllByRole('listitem');
+
+    await userEvent.click(screen.getByRole('button', {name: '登録'}));
+
+    await waitFor(() => {
+      const errorMsg = screen.getByText('入力されていない項目があります');
+      const afterLists = screen.getAllByRole('listitem');
+      expect(errorMsg).toBeInTheDocument();
+      expect(afterLists).toHaveLength(beforeLists.length);
+    });
+  });
 });

@@ -17,7 +17,10 @@ describe("App Component Test", () => {
 
   it("タイトルが「学習記録一覧」であること", async () => {
     render(<App />);
-    const title = await screen.findByTestId("title");
+    await waitFor(() => {
+      expect(screen.getByTestId("title")).toBeInTheDocument();
+    });
+    const title = screen.getByTestId("title");
     expect(title).toHaveTextContent("学習記録一覧");
   });
 

@@ -55,8 +55,11 @@ describe("App Component Test", () => {
 
     await waitFor(() => {
       const errorMsg = screen.getByText('入力されていない項目があります');
-      const afterLists = screen.getAllByRole('listitem');
       expect(errorMsg).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      const afterLists = screen.getAllByRole('listitem');
       expect(afterLists).toHaveLength(beforeLists.length);
     });
   });

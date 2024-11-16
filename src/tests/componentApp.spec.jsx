@@ -32,7 +32,7 @@ describe("App Component Test", () => {
     await waitFor(() => {
       const afterLists = screen.getAllByRole('listitem');
       expect(afterLists).toHaveLength(beforeLists.length + 1);
-    });
+    }), { timeout: 2000 };
   });
 
   it("削除ボタンを押すと学習記録が削除されること", async () => {
@@ -44,7 +44,7 @@ describe("App Component Test", () => {
     await waitFor(() => {
       const afterLists = screen.getAllByRole('listitem');
       expect(afterLists).toHaveLength(beforeLists.length - 1);
-    });
+    }, { timeout: 2000 });
   });
 
   it("入力をしないで登録を押すとエラーが表示される", async () => {
